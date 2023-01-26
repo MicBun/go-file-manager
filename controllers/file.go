@@ -18,6 +18,16 @@ type ListFileOutput struct {
 	Path string `json:"path"`
 }
 
+// ListFile godoc
+// @Summary List file
+// @Description List file
+// @Tags File
+// @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
+// @Accept  json
+// @Security BearerToken
+// @Produce  json
+// @Success 200 {object} ListFileOutput
+// @Router /file/list [get]
 func ListFile(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var files []models.File
@@ -41,6 +51,17 @@ func ListFile(c *gin.Context) {
 	})
 }
 
+// UploadFile godoc
+// @Summary Upload file
+// @Description Upload file
+// @Tags File
+// @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
+// @Accept  json
+// @Security BearerToken
+// @Produce  json
+// @Param file formData file true "File"
+// @Success 200 {object} models.File
+// @Router /file/upload [post]
 func UploadFile(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	file, err := c.FormFile("file")
@@ -115,9 +136,17 @@ func isValidFileType(file *multipart.FileHeader) bool {
 	return validFileTypes[fileType]
 }
 
+// DownloadFile godoc
+// @Summary Download file
+// @Description Download file by uploader and filename you can get from listFile endpoint so there is no need test this endpoint just click on the link provided by listFile endpoint if using postman
+// @Tags File
+// @Accept  json
+// @Produce  json
+// @Param uploader query string true "Uploader"
+// @Param filename query string true "Filename"
+// @Success 200 {object} models.File
+// @Router /download [get]
 func DownloadFile(c *gin.Context) {
-	//db := c.MustGet("db").(*gorm.DB)
-	//var file models.File
 	uploader := c.Query("uploader")
 	filename := c.Query("filename")
 

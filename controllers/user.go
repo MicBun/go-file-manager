@@ -8,21 +8,15 @@ import (
 	"net/http"
 )
 
-func ResetUserDatabase(c *gin.Context) {
-	db := c.MustGet("db").(*gorm.DB)
-	user := models.NewUser()
-	err := user.ResetUserDatabase(db)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Reset user database successfully",
-	})
-}
-
+// Login godoc
+// @Summary Login
+// @Description Login
+// @Tags User
+// @Accept  json
+// @Produce  json
+// @Param user body models.User true "User"
+// @Success 200 {object} models.User
+// @Router /login [post]
 func Login(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var user models.User

@@ -5,11 +5,12 @@ import (
 	"gorm.io/gorm"
 )
 
+// File
 type File struct {
-	gorm.Model
-	Name     string `json:"name"`
-	Uploader string `json:"uploader"`
-	Type     string `json:"type"`
+	gorm.Model `json:"-"`
+	Name       string `json:"name"`
+	Uploader   string `json:"uploader"`
+	Type       string `json:"type"`
 }
 
 type FileInterface interface {

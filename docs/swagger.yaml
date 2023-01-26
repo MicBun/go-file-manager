@@ -1,0 +1,150 @@
+definitions:
+  controllers.ListFileOutput:
+    properties:
+      name:
+        type: string
+      path:
+        type: string
+      type:
+        type: string
+      uploader:
+        type: string
+    type: object
+  models.File:
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+      uploader:
+        type: string
+    type: object
+  models.User:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /download:
+    get:
+      consumes:
+      - application/json
+      description: Download file by uploader and filename you can get from listFile
+        endpoint so there is no need test this endpoint just click on the link provided
+        by listFile endpoint if using postman
+      parameters:
+      - description: Uploader
+        in: query
+        name: uploader
+        required: true
+        type: string
+      - description: Filename
+        in: query
+        name: filename
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.File'
+      summary: Download file
+      tags:
+      - File
+  /file/list:
+    get:
+      consumes:
+      - application/json
+      description: List file
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.ListFileOutput'
+      security:
+      - BearerToken: []
+      summary: List file
+      tags:
+      - File
+  /file/upload:
+    post:
+      consumes:
+      - application/json
+      description: Upload file
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: File
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.File'
+      security:
+      - BearerToken: []
+      summary: Upload file
+      tags:
+      - File
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Login
+      tags:
+      - User
+  /resetUserDatabase:
+    post:
+      consumes:
+      - application/json
+      description: Reset user database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Reset user database
+      tags:
+      - User
+swagger: "2.0"
